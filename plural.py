@@ -1,4 +1,8 @@
+import os
 import discord
+import requests
+import random
+from bot_logic import get_duck_image_url
 from discord.ext import commands
 
 intents = discord.Intents.default()
@@ -67,7 +71,21 @@ async def remove(ctx, nombre_alter):
         alters_por_usuario[author_id].remove(nombre_alter)
         await ctx.send(f"✨ Alter '{nombre_alter}' removido de tu sistema, {ctx.author.name}.")
 
+@bot.command()
+async def meme_alet(ctx):
+    meme_aleatorio = random.choice(os.listdir("Bots de discord/imagenes"))
+    with open(f'Bots de discord/imagenes/{meme_aleatorio}', 'rb') as f:
+        # ¡Vamos a almacenar el archivo de la biblioteca Discord convertido en esta variable!
+        picture = discord.File(f)
+    # A continuación, podemos enviar este archivo como parámetro.
+    await ctx.send(file=picture)
 
+
+def get_duck_image_url():    
+    url = 'https://random-d.uk/api/random'
+    res = requests.get(url)
+    data = res.json()
+    return data['url']
     
 # Reemplaza por tu token real
-bot.run("REEMPLAZA POR UN TOKEN")
+bot.run("TOKEN VA AQUÍ")
